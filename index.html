@@ -6,240 +6,12 @@
 <title>Math Mallow — Học toán cấp 1 vui như chơi</title>
 <meta name="description" content="Math Mallow: ứng dụng học toán lớp 1–5 bám chương trình GDPT 2018, dạy theo phương pháp Singapore, AI chấm bài và báo cáo năng lực cho bố mẹ.">
 <link rel="icon" href="anh/mascot_books.png">
+<link rel="alternate" hreflang="vi" href="https://nghng76.github.io/math-mallow-gioi-thieu/">
+<link rel="alternate" hreflang="en" href="https://nghng76.github.io/math-mallow-gioi-thieu/en/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    color-scheme: light;
-    --coral: #ff6b57;
-    --coral-deep: #e8513d;
-    --coral-soft: #ffe3dc;
-    --cream: #fff5e4;
-    --cream-2: #fdebd0;
-    --cocoa: #3b2a20;
-    --cocoa-soft: #6e5a4d;
-    --teal: #12776b;
-    --teal-soft: #dff1ee;
-    --sky: #3bb4df;
-    --sky-soft: #def3fb;
-    --sun: #ffc93c;
-    --sun-soft: #fff1c7;
-    --leaf: #3dae66;
-    --leaf-soft: #e0f4e7;
-    --card: #ffffff;
-    --edge: #f0dfc6;
-    --radius: 22px;
-    --shadow: 0 10px 30px rgba(59, 42, 32, .08);
-    --head: "Baloo 2", "Segoe UI", system-ui, sans-serif;
-    --body: "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    background: var(--cream);
-    color: var(--cocoa);
-    font-family: var(--body);
-    font-size: 17px;
-    line-height: 1.6;
-  }
-  img { max-width: 100%; display: block; }
-  a { color: inherit; }
-  h1, h2, h3 { font-family: var(--head); line-height: 1.15; margin: 0; }
-  h2 { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; }
-  h3 { font-size: 22px; font-weight: 700; }
-  p { margin: 0; }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
-  section { padding: 84px 0; }
-  .eyebrow {
-    display: inline-block;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--coral-deep);
-    margin-bottom: 10px;
-  }
-  .lead { font-size: 19px; color: var(--cocoa-soft); max-width: 640px; margin-top: 14px; }
-  .center { text-align: center; }
-  .center .lead { margin-left: auto; margin-right: auto; }
-
-  /* Thanh trên cùng */
-  .nav {
-    position: sticky; top: 0; z-index: 10;
-    background: rgba(255, 245, 228, .88);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--edge);
-  }
-  .nav .wrap { display: flex; align-items: center; gap: 20px; height: 66px; }
-  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--head); font-weight: 800; font-size: 24px; }
-  .brand img { width: 40px; height: 40px; border-radius: 50%; }
-  .nav ul { list-style: none; display: flex; gap: 22px; margin: 0 0 0 auto; padding: 0; font-weight: 500; font-size: 15px; }
-  .nav ul a { text-decoration: none; color: var(--cocoa-soft); }
-  .nav ul a:hover { color: var(--coral-deep); }
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 13px 24px;
-    border-radius: 999px;
-    font-weight: 600;
-    text-decoration: none;
-    border: 0;
-    cursor: pointer;
-    font: 600 16px var(--body);
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-main { background: var(--coral); color: #fff; box-shadow: 0 8px 20px rgba(255, 107, 87, .35); }
-  .btn-ghost { background: #fff; color: var(--cocoa); border: 2px solid var(--edge); }
-  .nav .btn { padding: 9px 18px; font-size: 15px; }
-
-  /* Mở đầu */
-  .hero { padding: 64px 0 90px; position: relative; overflow: hidden; }
-  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
-  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; }
-  .hero h1 em { font-style: normal; color: var(--coral); white-space: nowrap; }
-  .hero .lead { font-size: 20px; }
-  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
-  .badge {
-    background: #fff; border: 1px solid var(--edge);
-    border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 500;
-  }
-  .hero-art { position: relative; justify-self: center; width: 100%; max-width: 440px; display: grid; place-items: center; padding: 10px 0; }
-  .hero-art .blob {
-    position: absolute; width: 92%; aspect-ratio: 1; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #ff9a85, var(--coral) 60%, var(--coral-deep));
-    box-shadow: 0 30px 60px rgba(232, 81, 61, .3);
-  }
-  .hero-art .phone { width: 260px; }
-  .hero-art .mascot { position: absolute; width: 150px; left: -6px; bottom: -6px; animation: bob 4s ease-in-out infinite; }
-  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  @media (prefers-reduced-motion: reduce) { .hero-art .mascot { animation: none; } html { scroll-behavior: auto; } }
-
-  /* Ảnh chụp màn hình app trong khung điện thoại */
-  .phone {
-    position: relative; margin: 0; border-radius: 38px; padding: 9px; background: #2b211b;
-    box-shadow: 0 24px 50px rgba(59, 42, 32, .22);
-  }
-  .phone img { width: 100%; height: auto; aspect-ratio: 400 / 860; border-radius: 30px; background: var(--cream); }
-  .phones { display: flex; justify-content: center; gap: 24px; align-items: flex-start; }
-  .phones figure { margin: 0; width: min(260px, 47%); }
-  .phones figure:nth-child(2) { margin-top: 60px; }
-  .phones figcaption { text-align: center; font-size: 14px; color: var(--cocoa-soft); margin-top: 14px; line-height: 1.4; }
-
-  /* Ba trụ cột */
-  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 44px; }
-  .card {
-    background: var(--card); border-radius: var(--radius); padding: 28px;
-    box-shadow: var(--shadow); border: 1px solid var(--edge);
-  }
-  .card p { color: var(--cocoa-soft); margin-top: 10px; }
-  .icon {
-    width: 56px; height: 56px; border-radius: 16px;
-    display: grid; place-items: center; font-size: 28px; margin-bottom: 18px;
-  }
-  .i-coral { background: var(--coral-soft); }
-  .i-teal { background: var(--teal-soft); }
-  .i-sun { background: var(--sun-soft); }
-  .i-sky { background: var(--sky-soft); }
-  .i-leaf { background: var(--leaf-soft); }
-
-  /* Hành trình */
-  .journey { background: #fff; border-radius: 48px 48px 0 0; }
-  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-  .steps { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 16px; }
-  .steps li { display: flex; gap: 14px; align-items: flex-start; }
-  .steps .n {
-    flex: none; width: 34px; height: 34px; border-radius: 50%;
-    background: var(--coral); color: #fff; font-weight: 700; display: grid; place-items: center; font-family: var(--head); font-size: 18px;
-  }
-  .steps b { display: block; }
-  .steps span { color: var(--cocoa-soft); font-size: 16px; }
-
-  /* Kiểu trả lời */
-  .types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
-  .type { background: #fff; border-radius: 18px; padding: 20px; border: 1px solid var(--edge); }
-  .type .em { font-size: 28px; }
-  .type b { display: block; margin-top: 8px; font-size: 17px; }
-  .type span { color: var(--cocoa-soft); font-size: 15px; display: block; margin-top: 4px; line-height: 1.45; }
-
-  /* Khám phá */
-  .explore { background: linear-gradient(160deg, #fff1c7, #ffe3dc); }
-  .ticks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
-  .ticks li { padding-left: 34px; position: relative; }
-  .ticks li::before {
-    content: "✓"; position: absolute; left: 0; top: 2px; width: 24px; height: 24px; border-radius: 50%;
-    background: var(--leaf); color: #fff; font-size: 14px; font-weight: 700; display: grid; place-items: center;
-  }
-
-  /* Bố mẹ */
-  .parents { background: #f4f8f7; }
-  .parents .eyebrow { color: var(--teal); }
-  .pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
-  .pgrid .card h3 { font-size: 20px; }
-
-  /* An toàn */
-  .safe .card { border-top: 6px solid var(--teal); }
-  .sgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 40px; }
-
-  /* Lộ trình */
-  .road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 40px; }
-  .lead a { color: var(--coral-deep); }
-  .grade { background: #fff; border-radius: 20px; padding: 22px 16px; text-align: center; border: 2px dashed var(--edge); }
-  .grade.first { border: 2px solid var(--coral); background: var(--coral-soft); }
-  .grade .g { font-family: var(--head); font-size: 40px; font-weight: 800; line-height: 1; }
-  .grade span { display: block; font-size: 14px; color: var(--cocoa-soft); margin-top: 6px; }
-  .platforms { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-
-  /* Hỏi đáp */
-  .faq { max-width: 780px; margin: 40px auto 0; display: grid; gap: 12px; }
-  details { background: #fff; border-radius: 18px; border: 1px solid var(--edge); padding: 18px 22px; }
-  summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
-  summary::-webkit-details-marker { display: none; }
-  summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--coral); }
-  details[open] summary::after { content: "–"; }
-  details p { margin-top: 10px; color: var(--cocoa-soft); }
-
-  /* Cuối trang */
-  .cta {
-    background: var(--coral); color: #fff; border-radius: 36px; padding: 48px 40px;
-    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
-  }
-  .cta img { width: 150px; }
-  .cta p { opacity: .92; margin-top: 10px; font-size: 18px; }
-  .cta .btn { background: #fff; color: var(--coral-deep); margin-top: 22px; }
-  footer { padding: 40px 0 50px; color: var(--cocoa-soft); font-size: 14px; }
-  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
-
-  @media (max-width: 900px) {
-    .nav ul { display: none; }
-    .nav .btn { margin-left: auto; }
-    .hero .wrap, .split { grid-template-columns: 1fr; }
-    .hero-art { max-width: 340px; order: -1; }
-    .pillars, .pgrid { grid-template-columns: 1fr; }
-    .types { grid-template-columns: repeat(2, 1fr); }
-    .sgrid { grid-template-columns: 1fr; }
-    .road { grid-template-columns: repeat(2, 1fr); }
-    .cta { grid-template-columns: 1fr; text-align: center; padding: 36px 24px; }
-    .cta img { margin: 0 auto; width: 120px; }
-    section { padding: 64px 0; }
-  }
-  @media (max-width: 520px) {
-    body { font-size: 16px; }
-    .wrap { padding: 0 16px; }
-    .types { grid-template-columns: 1fr; }
-    .road { grid-template-columns: repeat(2, 1fr); }
-    .hero-art .phone { width: 210px; }
-    .hero-art .mascot { width: 110px; left: 0; }
-    .phones { gap: 14px; }
-    .phone { border-radius: 28px; padding: 6px; }
-    .phone img { border-radius: 23px; }
-    .phones figure:nth-child(2) { margin-top: 36px; }
-    .card { padding: 22px; }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -253,6 +25,7 @@
       <li><a href="#an-toan">An toàn</a></li>
       <li><a href="#hoi-dap">Hỏi đáp</a></li>
     </ul>
+    <div class="lang"><a aria-current="page" title="Tiếng Việt">VI</a><a href="en/" hreflang="en" lang="en" title="English">EN</a></div>
     <a class="btn btn-main" href="https://dev.math-mallow.com/">Dùng thử</a>
   </div>
 </nav>
@@ -469,7 +242,7 @@
     <div class="platforms">
       <span class="badge">💻 Máy tính, máy tính bảng, điện thoại</span>
       <span class="badge">📚 Lớp 1 – 5</span>
-      <span class="badge">🇻🇳 Tiếng Việt · 🇬🇧 English</span>
+      <span class="badge">🌐 Tiếng Việt · English</span>
     </div>
     <p style="margin-top: 22px; color: var(--cocoa-soft); font-size: 15px;">Bản dùng thử có thể còn thay đổi giao diện và nội dung. Bản cài trên Android, iPhone và iPad sẽ có sau.</p>
   </div>
