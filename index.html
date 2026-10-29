@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Mallow — Học toán cấp 1 vui như chơi</title>
+<meta name="description" content="Math Mallow: ứng dụng học toán lớp 1–5 bám chương trình GDPT 2018, dạy theo phương pháp Singapore, AI chấm bài và báo cáo năng lực cho bố mẹ.">
+<link rel="icon" href="anh/mascot_books.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --coral: #ff6b57;
+    --coral-deep: #e8513d;
+    --coral-soft: #ffe3dc;
+    --cream: #fff5e4;
+    --cream-2: #fdebd0;
+    --cocoa: #3b2a20;
+    --cocoa-soft: #6e5a4d;
+    --teal: #12776b;
+    --teal-soft: #dff1ee;
+    --sky: #3bb4df;
+    --sky-soft: #def3fb;
+    --sun: #ffc93c;
+    --sun-soft: #fff1c7;
+    --leaf: #3dae66;
+    --leaf-soft: #e0f4e7;
+    --card: #ffffff;
+    --edge: #f0dfc6;
+    --radius: 22px;
+    --shadow: 0 10px 30px rgba(59, 42, 32, .08);
+    --head: "Baloo 2", "Segoe UI", system-ui, sans-serif;
+    --body: "Be Vietnam Pro", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--cocoa);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--head); line-height: 1.15; margin: 0; }
+  h2 { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; }
+  h3 { font-size: 22px; font-weight: 700; }
+  p { margin: 0; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 84px 0; }
+  .eyebrow {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--coral-deep);
+    margin-bottom: 10px;
+  }
+  .lead { font-size: 19px; color: var(--cocoa-soft); max-width: 640px; margin-top: 14px; }
+  .center { text-align: center; }
+  .center .lead { margin-left: auto; margin-right: auto; }
+
+  /* Thanh trên cùng */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255, 245, 228, .88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--edge);
+  }
+  .nav .wrap { display: flex; align-items: center; gap: 20px; height: 66px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--head); font-weight: 800; font-size: 24px; }
+  .brand img { width: 40px; height: 40px; border-radius: 50%; }
+  .nav ul { list-style: none; display: flex; gap: 22px; margin: 0 0 0 auto; padding: 0; font-weight: 500; font-size: 15px; }
+  .nav ul a { text-decoration: none; color: var(--cocoa-soft); }
+  .nav ul a:hover { color: var(--coral-deep); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    font: 600 16px var(--body);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-main { background: var(--coral); color: #fff; box-shadow: 0 8px 20px rgba(255, 107, 87, .35); }
+  .btn-ghost { background: #fff; color: var(--cocoa); border: 2px solid var(--edge); }
+  .nav .btn { padding: 9px 18px; font-size: 15px; }
+
+  /* Mở đầu */
+  .hero { padding: 64px 0 90px; position: relative; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; }
+  .hero h1 em { font-style: normal; color: var(--coral); white-space: nowrap; }
+  .hero .lead { font-size: 20px; }
+  .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+  .badge {
+    background: #fff; border: 1px solid var(--edge);
+    border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 500;
+  }
+  .hero-art { position: relative; justify-self: center; width: 100%; max-width: 440px; display: grid; place-items: center; padding: 10px 0; }
+  .hero-art .blob {
+    position: absolute; width: 92%; aspect-ratio: 1; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ff9a85, var(--coral) 60%, var(--coral-deep));
+    box-shadow: 0 30px 60px rgba(232, 81, 61, .3);
+  }
+  .hero-art .phone { width: 260px; }
+  .hero-art .mascot { position: absolute; width: 150px; left: -6px; bottom: -6px; animation: bob 4s ease-in-out infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @media (prefers-reduced-motion: reduce) { .hero-art .mascot { animation: none; } html { scroll-behavior: auto; } }
+
+  /* Ảnh chụp màn hình app trong khung điện thoại */
+  .phone {
+    position: relative; margin: 0; border-radius: 38px; padding: 9px; background: #2b211b;
+    box-shadow: 0 24px 50px rgba(59, 42, 32, .22);
+  }
+  .phone img { width: 100%; height: auto; aspect-ratio: 400 / 860; border-radius: 30px; background: var(--cream); }
+  .phones { display: flex; justify-content: center; gap: 24px; align-items: flex-start; }
+  .phones figure { margin: 0; width: min(260px, 47%); }
+  .phones figure:nth-child(2) { margin-top: 60px; }
+  .phones figcaption { text-align: center; font-size: 14px; color: var(--cocoa-soft); margin-top: 14px; line-height: 1.4; }
+
+  /* Ba trụ cột */
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 44px; }
+  .card {
+    background: var(--card); border-radius: var(--radius); padding: 28px;
+    box-shadow: var(--shadow); border: 1px solid var(--edge);
+  }
+  .card p { color: var(--cocoa-soft); margin-top: 10px; }
+  .icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    display: grid; place-items: center; font-size: 28px; margin-bottom: 18px;
+  }
+  .i-coral { background: var(--coral-soft); }
+  .i-teal { background: var(--teal-soft); }
+  .i-sun { background: var(--sun-soft); }
+  .i-sky { background: var(--sky-soft); }
+  .i-leaf { background: var(--leaf-soft); }
+
+  /* Hành trình */
+  .journey { background: #fff; border-radius: 48px 48px 0 0; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .steps { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 16px; }
+  .steps li { display: flex; gap: 14px; align-items: flex-start; }
+  .steps .n {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--coral); color: #fff; font-weight: 700; display: grid; place-items: center; font-family: var(--head); font-size: 18px;
+  }
+  .steps b { display: block; }
+  .steps span { color: var(--cocoa-soft); font-size: 16px; }
+
+  /* Kiểu trả lời */
+  .types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
+  .type { background: #fff; border-radius: 18px; padding: 20px; border: 1px solid var(--edge); }
+  .type .em { font-size: 28px; }
+  .type b { display: block; margin-top: 8px; font-size: 17px; }
+  .type span { color: var(--cocoa-soft); font-size: 15px; display: block; margin-top: 4px; line-height: 1.45; }
+
+  /* Khám phá */
+  .explore { background: linear-gradient(160deg, #fff1c7, #ffe3dc); }
+  .ticks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
+  .ticks li { padding-left: 34px; position: relative; }
+  .ticks li::before {
+    content: "✓"; position: absolute; left: 0; top: 2px; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--leaf); color: #fff; font-size: 14px; font-weight: 700; display: grid; place-items: center;
+  }
+
+  /* Bố mẹ */
+  .parents { background: #f4f8f7; }
+  .parents .eyebrow { color: var(--teal); }
+  .pgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+  .pgrid .card h3 { font-size: 20px; }
+
+  /* An toàn */
+  .safe .card { border-top: 6px solid var(--teal); }
+  .sgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 40px; }
+
+  /* Lộ trình */
+  .road { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 40px; }
+  .lead a { color: var(--coral-deep); }
+  .grade { background: #fff; border-radius: 20px; padding: 22px 16px; text-align: center; border: 2px dashed var(--edge); }
+  .grade.first { border: 2px solid var(--coral); background: var(--coral-soft); }
+  .grade .g { font-family: var(--head); font-size: 40px; font-weight: 800; line-height: 1; }
+  .grade span { display: block; font-size: 14px; color: var(--cocoa-soft); margin-top: 6px; }
+  .platforms { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+
+  /* Hỏi đáp */
+  .faq { max-width: 780px; margin: 40px auto 0; display: grid; gap: 12px; }
+  details { background: #fff; border-radius: 18px; border: 1px solid var(--edge); padding: 18px 22px; }
+  summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--coral); }
+  details[open] summary::after { content: "–"; }
+  details p { margin-top: 10px; color: var(--cocoa-soft); }
+
+  /* Cuối trang */
+  .cta {
+    background: var(--coral); color: #fff; border-radius: 36px; padding: 48px 40px;
+    display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
+  }
+  .cta img { width: 150px; }
+  .cta p { opacity: .92; margin-top: 10px; font-size: 18px; }
+  .cta .btn { background: #fff; color: var(--coral-deep); margin-top: 22px; }
+  footer { padding: 40px 0 50px; color: var(--cocoa-soft); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
+
+  @media (max-width: 900px) {
+    .nav ul { display: none; }
+    .nav .btn { margin-left: auto; }
+    .hero .wrap, .split { grid-template-columns: 1fr; }
+    .hero-art { max-width: 340px; order: -1; }
+    .pillars, .pgrid { grid-template-columns: 1fr; }
+    .types { grid-template-columns: repeat(2, 1fr); }
+    .sgrid { grid-template-columns: 1fr; }
+    .road { grid-template-columns: repeat(2, 1fr); }
+    .cta { grid-template-columns: 1fr; text-align: center; padding: 36px 24px; }
+    .cta img { margin: 0 auto; width: 120px; }
+    section { padding: 64px 0; }
+  }
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 16px; }
+    .types { grid-template-columns: 1fr; }
+    .road { grid-template-columns: repeat(2, 1fr); }
+    .hero-art .phone { width: 210px; }
+    .hero-art .mascot { width: 110px; left: 0; }
+    .phones { gap: 14px; }
+    .phone { border-radius: 28px; padding: 6px; }
+    .phone img { border-radius: 23px; }
+    .phones figure:nth-child(2) { margin-top: 36px; }
+    .card { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="anh/mascot_books.png" alt="">Math Mallow</a>
+    <ul>
+      <li><a href="#hanh-trinh">Bé học thế nào</a></li>
+      <li><a href="#kham-pha">Khám phá</a></li>
+      <li><a href="#bo-me">Dành cho bố mẹ</a></li>
+      <li><a href="#an-toan">An toàn</a></li>
+      <li><a href="#hoi-dap">Hỏi đáp</a></li>
+    </ul>
+    <a class="btn btn-main" href="https://dev.math-mallow.com/">Dùng thử</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Ứng dụng học toán lớp 1 – 5 · Đang mở dùng thử</span>
+      <h1>Học toán <em>vui như chơi</em>,<br>bố mẹ yên tâm theo dõi</h1>
+      <p class="lead">Math Mallow đưa bé đi qua từng chặng trên bản đồ phiêu lưu, học đúng chương trình ở trường theo cách hiểu bản chất của Toán Singapore. Bố mẹ biết rõ con đã vững phần nào, cần luyện phần nào sau mỗi bài.</p>
+      <div class="actions">
+        <a class="btn btn-main" href="https://dev.math-mallow.com/">Dùng thử ngay →</a>
+        <a class="btn btn-ghost" href="#hanh-trinh">Xem bé học thế nào</a>
+      </div>
+      <div class="badges">
+        <span class="badge">📘 Chương trình GDPT 2018</span>
+        <span class="badge">🧮 Phương pháp Singapore</span>
+        <span class="badge">🚫 Không quảng cáo</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="blob" aria-hidden="true"></div>
+      <figure class="phone"><img src="anh/app-ban-do.webp" alt="Màn hình Hành trình trong app: bản đồ các chặng, chặng đã học có sao, chặng đang học có linh vật Mallow" width="400" height="860"></figure>
+      <img class="mascot" src="anh/mascot_cheer.png" alt="" aria-hidden="true">
+    </div>
+  </div>
+</header>
+
+<section style="padding-top: 20px;">
+  <div class="wrap center">
+    <span class="eyebrow">Vì sao chọn Math Mallow</span>
+    <h2>Ba điều làm nên một bài học tốt</h2>
+    <div class="pillars" style="text-align: left;">
+      <div class="card">
+        <div class="icon i-coral">📘</div>
+        <h3>Đúng chương trình ở trường</h3>
+        <p>Mỗi câu hỏi gắn với một "yêu cầu cần đạt" của Chương trình GDPT 2018 môn Toán. Thứ tự bài theo sách <i>Kết nối tri thức với cuộc sống</i>, nên bé học tới đâu khớp với lớp tới đó.</p>
+      </div>
+      <div class="card">
+        <div class="icon i-sun">🧱</div>
+        <h3>Hiểu bản chất, không học vẹt</h3>
+        <p>Dạy theo Toán Singapore: đi từ đồ vật cụ thể, tới hình ảnh, rồi mới tới con số. Sơ đồ tách – gộp số và mô hình thanh giúp bé "nhìn thấy" bài toán có lời văn.</p>
+      </div>
+      <div class="card">
+        <div class="icon i-teal">✨</div>
+        <h3>AI chấm bài, nhận xét ân cần</h3>
+        <p>Bé viết tay hay chụp ảnh bài làm trên giấy đều được chấm. Mức năng lực tính theo quy tắc rõ ràng, ổn định; AI chỉ viết lời nhận xét dễ hiểu gửi bố mẹ và lời khen cho bé.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="journey" id="hanh-trinh">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow">Chế độ trẻ em</span>
+      <h2>Mỗi bài học là một chặng phiêu lưu</h2>
+      <p class="lead">Bé đi dọc bản đồ, mỗi chương là một chủ đề trong sách giáo khoa. Học xong một chặng thì mở chặng tiếp theo.</p>
+      <ol class="steps">
+        <li><span class="n">1</span><div><b>Xem minh họa bài học</b><span>Hình minh họa theo phương pháp Singapore như sơ đồ tách – gộp số. Video ngắn có Mallow dẫn dắt đang được bổ sung dần.</span></div></li>
+        <li><span class="n">2</span><div><b>Trả lời câu hỏi vừa sức</b><span>Mỗi lượt chọn câu theo mức của bé: bé còn yếu thì nhiều câu dễ, bé đã vững thì thêm câu khó.</span></div></li>
+        <li><span class="n">3</span><div><b>Nhận sao và lời khen</b><span>Tổng kết chặng có hiệu ứng ăn mừng. Chưa được sao thì làm lại, không bị trách.</span></div></li>
+        <li><span class="n">4</span><div><b>Luyện thêm hoặc thử thách</b><span>Bé cần thêm thời gian có chặng luyện thêm; bé đã giỏi có chặng thử thách khó hơn.</span></div></li>
+      </ol>
+    </div>
+    <div class="phones">
+      <figure>
+        <div class="phone"><img src="anh/app-cau-hoi.webp" alt="Câu hỏi tách – gộp số: Số 4 gồm 1 và mấy? Bé kéo hoặc chạm số để điền vào ô trống" width="400" height="860" loading="lazy"></div>
+        <figcaption>Câu hỏi tách – gộp số: bé chạm hoặc kéo số vào ô trống</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="wrap center" style="margin-top: 90px;">
+    <span class="eyebrow">Cách bé trả lời</span>
+    <h2>Nhiều kiểu câu hỏi, như ngồi làm bài thật</h2>
+    <p class="lead">Mỗi dạng toán có cách trả lời phù hợp. Phần lớn được chấm ngay trên máy, câu viết tay hoặc ảnh chụp mới cần AI.</p>
+    <div class="types" style="text-align: left;">
+      <div class="type"><span class="em">✍️</span><b>Viết tay</b><span>Viết số, đặt tính ngay trên màn hình như viết vào vở.</span></div>
+      <div class="type"><span class="em">📷</span><b>Chụp bài làm giấy</b><span>Bài nhiều bước làm trên giấy, chụp lại để chấm.</span></div>
+      <div class="type"><span class="em">🧩</span><b>Kéo – thả</b><span>Điền số vào sơ đồ tách – gộp, mô hình thanh, tia số.</span></div>
+      <div class="type"><span class="em">🔗</span><b>Nối cặp</b><span>Nối phép tính với kết quả, hình với tên gọi.</span></div>
+      <div class="type"><span class="em">🔢</span><b>Sắp xếp</b><span>Xếp các số, đồ vật theo thứ tự.</span></div>
+      <div class="type"><span class="em">🕒</span><b>Quay kim đồng hồ</b><span>Kéo kim để đặt đúng giờ được hỏi.</span></div>
+      <div class="type"><span class="em">📝</span><b>Bài toán có lời văn</b><span>Điền lời giải, phép tính, đáp số hoặc viết cả bài giải, có mô hình thanh gợi ý.</span></div>
+      <div class="type"><span class="em">⚡</span><b>Tính nhẩm nhanh</b><span>Đồng hồ nhẹ nhàng; hết giờ vẫn làm tiếp, không áp lực.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="explore" id="kham-pha">
+  <div class="wrap split">
+    <div class="phones">
+      <figure>
+        <div class="phone"><img src="anh/app-cau-chuyen.webp" alt="Màn đọc truyện Bánh chưng, bánh giầy: tranh minh họa, chữ to, nút nghe đọc, lật trang" width="400" height="860" loading="lazy"></div>
+        <figcaption>Đọc truyện như sách tranh, có nút nghe đọc</figcaption>
+      </figure>
+      <figure>
+        <div class="phone"><img src="anh/app-kham-pha.webp" alt="Tab Khám phá: tổng số sao, câu chuyện đã đọc, sổ từ tiếng Anh với các thẻ number, count, zero, rabbit" width="400" height="860" loading="lazy"></div>
+        <figcaption>Tab Khám phá: truyện đã đọc và sổ từ tiếng Anh</figcaption>
+      </figure>
+    </div>
+    <div>
+      <span class="eyebrow">Khám phá</span>
+      <h2>Câu chuyện toán học và từ tiếng Anh</h2>
+      <p class="lead">Xen giữa các chặng học là những chặng nghỉ chân thú vị, để bé thấy toán học gần gũi và có lịch sử, có con người.</p>
+      <ul class="ticks">
+        <li><b>Truyện tranh có giọng đọc:</b> chuyện về các nhà toán học, nguồn gốc con số, lật trang như sách thật. Cuối truyện có câu hỏi vui, không chấm điểm.</li>
+        <li><b>Từ vựng toán tiếng Anh:</b> thẻ từ có hình, phát âm, câu ví dụ; sau đó là trò chơi bắn bóng, lật thẻ, ghép chữ.</li>
+        <li><b>Từ được tô màu ngay trong bài học:</b> bé chạm vào là thấy nghĩa và nghe phát âm.</li>
+        <li><b>Sổ từ của bé:</b> đọc lại truyện đã mở, nghe lại các từ đã học bất cứ lúc nào.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="parents" id="bo-me">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow">Chế độ phụ huynh</span>
+      <h2>Biết con giỏi gì, cần luyện gì</h2>
+      <p class="lead">Không chỉ là điểm số. Bố mẹ thấy được năng lực của con theo đúng từng yêu cầu của chương trình, chia theo mạch kiến thức.</p>
+      <ul class="ticks">
+        <li><b>Ba mức rõ ràng:</b> Chưa đạt · Đạt · Tốt, tính trên 10 lượt làm gần nhất của mỗi yêu cầu.</li>
+        <li><b>Lỗi hay gặp:</b> quên nhớ khi cộng, viết ngược chữ số, nhầm dấu… để bố mẹ biết con vướng ở đâu.</li>
+        <li><b>Xem lại từng câu:</b> con trả lời gì, đáp án đúng, lời giải, ảnh bài làm.</li>
+      </ul>
+    </div>
+    <div class="phones">
+      <figure>
+        <div class="phone"><img src="anh/app-bao-cao.webp" alt="Báo cáo phụ huynh: bản đồ năng lực theo yêu cầu cần đạt, mỗi yêu cầu có mức Tốt, Đạt hoặc Chưa đạt" width="400" height="860" loading="lazy"></div>
+        <figcaption>Bản đồ năng lực theo từng yêu cầu cần đạt</figcaption>
+      </figure>
+      <figure>
+        <div class="phone"><img src="anh/app-thong-bao.webp" alt="Thông báo cho phụ huynh: nhận xét sau mỗi bài, câu chuyện con đã đọc, gợi ý ôn tập chờ bố mẹ đồng ý" width="400" height="860" loading="lazy"></div>
+        <figcaption>Nhận xét sau mỗi bài và gợi ý ôn chờ bố mẹ duyệt</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="pgrid">
+      <div class="card">
+        <div class="icon i-teal">💬</div>
+        <h3>Nhận xét sau mỗi bài</h3>
+        <p>Một hai câu ngắn gọn ngay khi con học xong: kết quả, phần con vừa nắm được, điều cần lưu ý.</p>
+      </div>
+      <div class="card">
+        <div class="icon i-sky">📅</div>
+        <h3>Tổng kết tuần, tháng, học kỳ</h3>
+        <p>So sánh với kỳ trước, phần tiến bộ và phần nên ôn lại. Nhận trong app, có thể bật thêm email.</p>
+      </div>
+      <div class="card">
+        <div class="icon i-sun">🧭</div>
+        <h3>Bố mẹ quyết định bài ôn</h3>
+        <p>Khi con còn yếu phần nào, app gợi ý chặng ôn riêng. Bố mẹ đồng ý thì mới thêm vào, hoặc tự chọn phần cần ôn.</p>
+      </div>
+      <div class="card">
+        <div class="icon i-coral">📝</div>
+        <h3>Bài kiểm tra như ở trường</h3>
+        <p>Kiểm tra cuối chủ đề và định kỳ theo học kỳ, chấm thang điểm 10. Bố mẹ có thể giao thêm bài kiểm tra cho con.</p>
+      </div>
+      <div class="card">
+        <div class="icon i-leaf">⏱️</div>
+        <h3>Giới hạn thời gian dùng</h3>
+        <p>Đặt số phút mỗi ngày cho từng con. App nhắc trước 5 phút và cho con làm nốt chặng đang dở rồi mới khóa.</p>
+      </div>
+      <div class="card">
+        <div class="icon i-sky">👨‍👩‍👧‍👦</div>
+        <h3>Nhiều con, một tài khoản</h3>
+        <p>Mỗi con một hồ sơ, một lộ trình riêng. Bố mẹ chọn lớp và chương con bắt đầu học.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="safe" id="an-toan">
+  <div class="wrap center">
+    <span class="eyebrow" style="color: var(--teal);">An toàn &amp; riêng tư</span>
+    <h2>Thiết kế cho trẻ em ngay từ đầu</h2>
+    <p class="lead">Dữ liệu của con là điều bố mẹ quan tâm nhất, nên đó cũng là điều chúng tôi làm kỹ nhất.</p>
+    <div class="sgrid" style="text-align: left;">
+      <div class="card">
+        <h3>🔐 Cổng phụ huynh</h3>
+        <p>Muốn vào cài đặt, xem báo cáo, cộng giờ hay thoát chế độ trẻ em đều phải nhập mã PIN hoặc vân tay, khuôn mặt của bố mẹ.</p>
+      </div>
+      <div class="card">
+        <h3>🛡️ Dữ liệu được mã hóa</h3>
+        <p>Email, tên con, mã PIN và các thông tin nhạy cảm được mã hóa trước khi lưu. Kể cả khi máy chủ bị xâm nhập cũng không đọc được.</p>
+      </div>
+      <div class="card">
+        <h3>🙈 AI không biết con là ai</h3>
+        <p>Khi chấm bài, AI chỉ nhận nội dung bài làm và mã nội bộ, không có tên, ảnh mặt hay thông tin định danh của trẻ.</p>
+      </div>
+      <div class="card">
+        <h3>🚫 Không quảng cáo, không video lạ</h3>
+        <p>Video bài học lưu trên máy chủ riêng, không qua YouTube, nên không có quảng cáo hay video gợi ý. Bố mẹ có thể xóa tài khoản cùng toàn bộ dữ liệu của con bất cứ lúc nào.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dung-thu" style="background:#fff;">
+  <div class="wrap center">
+    <span class="eyebrow">Dùng thử</span>
+    <h2>Math Mallow đang chạy thử</h2>
+    <p class="lead">Bản dùng thử đã có tại <a href="https://dev.math-mallow.com/"><b>dev.math-mallow.com</b></a>. Mời bố mẹ cùng bé vào học thử và góp ý để chúng tôi hoàn thiện trước khi phát hành chính thức.</p>
+    <div class="road">
+      <div class="grade first"><div class="g">1</div><span>Mở <b>dev.math-mallow.com</b> trên trình duyệt</span></div>
+      <div class="grade"><div class="g">2</div><span>Tạo tài khoản bố mẹ</span></div>
+      <div class="grade"><div class="g">3</div><span>Thêm hồ sơ cho con, chọn lớp</span></div>
+      <div class="grade"><div class="g">4</div><span>Bé bắt đầu chặng đầu tiên</span></div>
+    </div>
+    <div class="platforms">
+      <span class="badge">💻 Máy tính, máy tính bảng, điện thoại</span>
+      <span class="badge">📚 Lớp 1 – 5</span>
+      <span class="badge">🇻🇳 Tiếng Việt · 🇬🇧 English</span>
+    </div>
+    <p style="margin-top: 22px; color: var(--cocoa-soft); font-size: 15px;">Bản dùng thử có thể còn thay đổi giao diện và nội dung. Bản cài trên Android, iPhone và iPad sẽ có sau.</p>
+  </div>
+</section>
+
+<section id="hoi-dap">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">Hỏi đáp</span>
+      <h2>Bố mẹ thường hỏi</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Con học trường dùng bộ sách khác thì có dùng được không?</summary>
+        <p>Được. Câu hỏi gắn với "yêu cầu cần đạt" của chương trình chung, không gắn cứng vào một bộ sách. Thứ tự bài hiện theo bộ <i>Kết nối tri thức</i>; bố mẹ có thể chọn chương con bắt đầu học cho khớp với lớp.</p>
+      </details>
+      <details>
+        <summary>Con mới học lớp 2, 3… thì bắt đầu từ đâu?</summary>
+        <p>Bé lớp 2 trở lên làm một bài kiểm tra đầu vào ngắn để app biết mức của con. Phần nào còn yếu, app gợi ý chặng ôn và bố mẹ quyết định có thêm hay không. Bé lớp 1 chỉ có bài khởi động nhẹ nhàng, không chặn đường.</p>
+      </details>
+      <details>
+        <summary>AI chấm sai thì sao?</summary>
+        <p>Bé có thể bấm chấm lại. Nếu vẫn bị chấm sai, câu đó vào mục "Cần đối chiếu" để bố mẹ xem ảnh bài làm và xác nhận Đúng hoặc Sai. Kết quả bố mẹ xác nhận được ưu tiên, sao và mức năng lực tự tính lại.</p>
+      </details>
+      <details>
+        <summary>Không có mạng thì con có học được không?</summary>
+        <p>Có. Khi có Wi-Fi, app tải trước một hai chặng tiếp theo. Mất mạng, phần lớn câu hỏi vẫn chấm ngay trên máy; câu cần AI sẽ được chấm khi có mạng trở lại.</p>
+      </details>
+      <details>
+        <summary>App có chuỗi ngày học, bảng xếp hạng không?</summary>
+        <p>Không. Chúng tôi chọn không tạo áp lực "phải học mỗi ngày" hay so sánh với bạn khác. Bé được sao khi qua chặng, và có câu chuyện, từ tiếng Anh để khám phá — niềm vui đến từ chính việc học.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top: 0;">
+  <div class="wrap">
+    <div class="cta">
+      <img src="anh/mascot_cheer.png" alt="Linh vật Math Mallow">
+      <div>
+        <h2>Cùng Mallow biến giờ học toán thành giờ vui</h2>
+        <p>Bản dùng thử đang mở. Mời bố mẹ và các bé vào học thử, mọi góp ý đều giúp Mallow tốt hơn!</p>
+        <a class="btn" href="https://dev.math-mallow.com/">Dùng thử tại dev.math-mallow.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Math Mallow · Ứng dụng học toán cấp 1</span>
+    <span>Chương trình GDPT 2018 · Phương pháp Singapore</span>
+  </div>
+</footer>
+
+</body>
+</html>
